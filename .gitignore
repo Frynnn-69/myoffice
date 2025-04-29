@@ -1,0 +1,15 @@
+# Laravel
+myoffice-be/vendor/
+myoffice-be/node_modules/
+myoffice-be/.env
+myoffice-be/storage/*.key
+myoffice-be/public/storage
+myoffice-be/.phpunit.result.cache
+
+# React 
+myoffice-fe/node_modules/
+myoffice-fe/.env
+
+# Umum
+.DS_Store
+.idea/
