@@ -27,7 +27,8 @@ class OfficeSpaceResource extends Resource
                 Forms\Components\TextInput::make('name')
                 ->helperText('Enter the name of the office space')
                 ->required()
-                ->maxLength(255),
+                ->maxLength(255)
+                ->label('Office Space Name'),
 
                 Forms\Components\TextInput::make('address')
                 ->required()
@@ -53,7 +54,8 @@ class OfficeSpaceResource extends Resource
                 ->relationship('benefits')
                 ->schema([
                     Forms\Components\TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->label('Benefit Name'),
                 ]),
 
                 Forms\Components\Select::make('city_id')
@@ -77,14 +79,16 @@ class OfficeSpaceResource extends Resource
                     true => 'Open',
                     false => 'Closed',
                 ])
-                ->required(),
+                ->required()
+                ->label('Status'),
 
                 Forms\Components\Select::make('is_full_booked')
                 ->options([
                     true => 'Not Available',
                     false => 'Available',
                 ])
-                ->required(),
+                ->required()
+                ->label('Availability'),
             ]);
     }
 
@@ -93,11 +97,19 @@ class OfficeSpaceResource extends Resource
         return $table
             ->columns([
                 tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-
-                tables\Columns\ImageColumn::make('thumbnail'),
+                    ->searchable()
+                    ->label('Office Space Name'),
 
                 tables\Columns\TextColumn::make('city.name'),
+
+                tables\Columns\TextColumn::make('price')
+                    ->formatStateUsing(function ($state) {
+                        return 'IDR ' . number_format($state, 0, ',', '.');
+                    }),
+
+                tables\Columns\TextColumn::make('duration'),
+                
+                tables\Columns\ImageColumn::make('thumbnail'),
                 
                 tables\Columns\IconColumn::make('is_full_booked')
                     ->boolean()
@@ -105,12 +117,27 @@ class OfficeSpaceResource extends Resource
                     ->falseColor('success')
                     ->trueIcon('heroicon-o-x-circle')
                     ->falseIcon('heroicon-o-check-circle')
-                    ->label('Available'),
+                    ->label('Availability'),
             ])
             ->filters([
                 SelectFilter::make('city_id')
                 ->label('City')
                 ->relationship('city', 'name'),
+
+                SelectFilter::make('price')
+                ->label('Price')
+                ->options([
+                    '0-1000000' => 'IDR 0 - IDR 1.000.000',
+                    '1000000-3000000' => 'IDR 1.000.000 - IDR 3.000.000',
+                    '3000000-5000000' => 'IDR 3.000.000 - IDR 5.000.000',
+                    '5000000-10000000' => 'IDR 5.000.000 - IDR 10.000.000',
+                ])
+                ->query(function (Builder $query, array $data) {
+                    if (isset($data['value'])) {
+                        [$min, $max] = explode('-', $data['value']);
+                        return $query->whereBetween('price', [(int)$min, (int)$max]);
+                    }
+                }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

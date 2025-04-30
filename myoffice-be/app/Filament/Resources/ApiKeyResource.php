@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CityResource\Pages;
-use App\Filament\Resources\CityResource\RelationManagers;
-use App\Models\City;
+use App\Filament\Resources\ApiKeyResource\Pages;
+use App\Filament\Resources\ApiKeyResource\RelationManagers;
+use App\Models\ApiKey;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,25 +13,24 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CityResource extends Resource
+class ApiKeyResource extends Resource
 {
-    protected static ?string $model = City::class;
+    protected static ?string $model = ApiKey::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-globe-americas';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                ->helperText('Enter the name of the city')
-                ->required()
-                ->maxLength(255)
-                ->label('City Name'),
+                    ->required()
+                    ->maxLength(255)
+                    ->label('API Key Name'),
 
-                Forms\Components\FileUpload::make('photo')
-                ->image()
-                ->required(),
+                Forms\Components\TextInput::make('key')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -39,11 +38,9 @@ class CityResource extends Resource
     {
         return $table
             ->columns([
-                tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable()
-                    ->label('City Name'),
-
-                tables\Columns\ImageColumn::make('photo')
+                    ->label('API Key Name'),
             ])
             ->filters([
                 //
@@ -68,9 +65,9 @@ class CityResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCities::route('/'),
-            'create' => Pages\CreateCity::route('/create'),
-            'edit' => Pages\EditCity::route('/{record}/edit'),
+            'index' => Pages\ListApiKeys::route('/'),
+            'create' => Pages\CreateApiKey::route('/create'),
+            'edit' => Pages\EditApiKey::route('/{record}/edit'),
         ];
     }
 }
