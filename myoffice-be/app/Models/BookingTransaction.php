@@ -16,14 +16,14 @@ class BookingTransaction extends Model
         'phone_number',
         'booking_trx_id',
         'is_paid',
-        'started_at',
+        'started_date',
         'total_amount',
         'duration',
-        'endet_at',
+        'ended_date',
         'office_space_id',
     ];
 
-    public function officaeSpace(): BelongsTo
+    public function officeSpace(): BelongsTo
     {
         return $this->belongsTo(OfficeSpace::class, 'office_space_id');
     }
