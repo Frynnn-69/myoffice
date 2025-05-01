@@ -10,6 +10,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::middleware('api_key')->group(function () { // middleware untuk memeriksa api key
+    
     Route::get('/city/{city:slug}', [CityController::class, 'show']);
     Route::apiResource('/cities', CityController::class); //alternatif route untuk endpoint cities (api resource udah handle CRUD)
 
@@ -18,3 +20,5 @@ Route::get('/user', function (Request $request) {
 
     Route::post('/booking-transcation', [BookingTransactionController::class, 'store']); 
     Route::post('/check-booking', [BookingTransactionController::class, 'booking_details']);
+
+});
