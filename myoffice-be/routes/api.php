@@ -3,7 +3,6 @@
 use App\Http\Controllers\API\BookingTransactionController;
 use App\Http\Controllers\API\CityController;
 use App\Http\Controllers\API\OfficeSpaceController;
-use App\Http\Controllers\API\BookingTransactionControllerr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
