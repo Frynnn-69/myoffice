@@ -11,16 +11,14 @@ class CityController extends Controller
 {
     public function index() // Menampilkan semua kota beserta jumlah officeSpace di setiap kota
     {    
-        $cities = City::withCount('officeSpace')->get();
+        $cities = City::withCount('officeSpaces')->get();
         return CityResource::collection($cities);
     }
 
-
-
     public function show(City $city) // Menampilkan detail satu kota (berdasarkan model binding), termasuk data officeSpace & fotonya + jumlah officeSpace nya
     {
-        $city->load(['officeSpace.city', 'officeSpace.photo']);
-        $city->loadCount('officeSpace');
+        $city->load(['officeSpaces.city', 'officeSpaces.photos'/*, 'officeSpaces.benefits'*/]);
+        $city->loadCount('officeSpaces');
         return new CityResource($city);
     }
 }

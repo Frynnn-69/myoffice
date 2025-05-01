@@ -14,7 +14,7 @@ Route::get('/user', function (Request $request) {
     Route::apiResource('/cities', CityController::class); //alternatif route untuk endpoint cities (api resource udah handle CRUD)
 
     Route::get('/office/{officeSpace:slug', [OfficeSpaceController::class, 'show']);
-    Route::apiResource('/office', OfficeSpaceController::class); 
+    Route::apiResource('/offices', OfficeSpaceController::class); 
 
     Route::post('/booking-transcation', [BookingTransactionController::class, 'store']); 
     Route::post('/check-booking', [BookingTransactionController::class, 'booking_details']);
