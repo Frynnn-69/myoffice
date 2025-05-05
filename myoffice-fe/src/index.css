@@ -619,6 +619,10 @@ video {
   margin-bottom: 120px;
 }
 
+.mb-\[20px\] {
+  margin-bottom: 20px;
+}
+
 .ml-\[calc\(\(100\%-1130px\)\/2\)\] {
   margin-left: calc((100% - 1130px) / 2);
 }
@@ -1166,12 +1170,21 @@ video {
   padding-bottom: 22px;
 }
 
+.py-\[30px\] {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
 .pb-10 {
   padding-bottom: 2.5rem;
 }
 
 .pb-\[30px\] {
   padding-bottom: 30px;
+}
+
+.pt-\[50px\] {
+  padding-top: 50px;
 }
 
 .pt-\[150px\] {
