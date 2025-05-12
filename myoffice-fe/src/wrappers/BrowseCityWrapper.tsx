@@ -3,6 +3,7 @@ import CityCard from "../components/CityCard";
 import { useState, useEffect } from "react";
 import { City } from "../types/types";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function BrowseCityWrapper() {
 
@@ -60,7 +61,9 @@ if (error) {
           >
             {cities.map((city) => (
               <SwiperSlide key={city.id} className="!w-fit first-of-type:pl-[calc((100%-1130px-60px)/2)] last-of-type:pr-[calc((100%-1130px-60px)/2)]">
+                <Link to={`/city/${city.slug}`}>
                 <CityCard city={city} />
+                </Link>
               </SwiperSlide> 
             ))}
           </Swiper>
