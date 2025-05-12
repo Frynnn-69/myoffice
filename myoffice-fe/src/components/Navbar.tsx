@@ -5,9 +5,9 @@ export default function Navbar() {
         <a href="index.html">
           <img src="/assets/images/logos/logo.svg" alt="logo" />
         </a>
-        <ul className="flex items-center gap-[50px] w-fit">
+        <ul className="flex items-center gap-[50px] w-fit font">
           <li>
-            <a href="">Browse</a>
+            <a href="/">Browse</a>
           </li>
           <li>
             <a href="">Popular</a>
