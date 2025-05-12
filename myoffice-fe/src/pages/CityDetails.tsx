@@ -4,6 +4,8 @@ import { City } from "../types/types";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import OfficeCard from "../components/OfficeCard";
+import { Link } from "react-router-dom";
+
 
 export default function CityDetails() {
   const { slug } = useParams<{ slug: string }>(); // Get the slug from the URL
@@ -82,7 +84,9 @@ export default function CityDetails() {
         </h2>
         <div className="grid grid-cols-3 gap-[30px]">
           {city.officeSpaces.map((office) => (
-            <OfficeCard key={office.id} office={office} />
+            <Link key={office.id} to={`/office/${office.slug}`}>
+            <OfficeCard office={office} />
+            </Link>
           ))}
         </div>
       </section>

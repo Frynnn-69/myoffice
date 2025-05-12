@@ -9,6 +9,7 @@ export interface Office {
     photos: Photo[], // menggunakan [] karena ada banyak foto
     benefits: Benefit[],
     about: string,
+    address: string,
 }
 
 export interface City {
