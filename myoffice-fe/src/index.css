@@ -1049,6 +1049,7 @@ video {
 .border-\[\#F6F5FD\] {
   --tw-border-opacity: 1;
   border-color: rgb(246 245 253 / var(--tw-border-opacity));
+  border-width: 1.3px;
 }
 
 .bg-\[\#000929\] {
