@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useState, useEffect } from "react";
 import { Office } from "../types/types";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Details() {
   const { slug } = useParams<{ slug: string }>(); // Get the slug from the URL
@@ -90,7 +91,7 @@ export default function Details() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="font-extrabold text-[32px] leading-[44px]">
-                {office.name}<br /> Master Capitalize
+              {office.name}
               </h1>
               <div className="flex items-center gap-[6px] mt-[10px]">
                 <img
@@ -251,8 +252,8 @@ export default function Details() {
             </div>
             <hr className="border-[#F6F5FD]" />
             <div className="flex flex-col gap-[14px]">
-              <a
-                href="booking.html"
+              <Link to={`/office/${office.slug}/book`}>
+              <div
                 className="flex items-center justify-center w-full rounded-full p-[16px_26px] gap-3 bg-[#0D903A] font-bold text-[#F7F7FD]"
               >
                 <img
@@ -261,7 +262,8 @@ export default function Details() {
                   alt="icon"
                 />
                 <span>Book This Office</span>
-              </a>
+              </div>
+              </Link>
               <button className="flex items-center justify-center w-full rounded-full border border-[#000929] p-[16px_26px] gap-3 bg-white font-semibold">
                 <img
                   src="/assets/images/icons/save-add.svg"
