@@ -107,7 +107,7 @@ export default function BookOffice() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/booking-transcation",
+        "http://127.0.0.1:8000/api/booking-transaction",
         {
           ...formData,
           //untuk mengirimkan data form ke backend
@@ -159,7 +159,7 @@ export default function BookOffice() {
         />
       </div>
       <form
-        action="booking-finished.html"
+        onSubmit={handleSubmit}
         className="relative flex justify-center max-w-[1130px] mx-auto gap-[30px] mb-20 z-20"
       >
         <div className="flex flex-col shrink-0 w-[500px] h-fit rounded-[20px] border border-[#E0DEF7] p-[30px] gap-[30px] bg-white">
