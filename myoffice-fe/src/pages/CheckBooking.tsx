@@ -1,6 +1,67 @@
+import { useState } from "react";
 import Navbar from "../components/Navbar";
+import { z } from "zod";
+import { BookingDetails } from "../types/types";
+import { viewBookingSchema } from "../types/validationBooking";
+import axios from "axios";
 
 export default function CheckBooking() {
+  
+
+  const [formData, setFormData] = useState({
+    phone_number: "",
+    booking_trx_id: "",
+  });
+
+  const [formErrors, setFormErrors] = useState<z.ZodIssue[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [bookingDetails, setBookingDetails] = useState<BookingDetails | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const baseURL = "http://127.0.0.1:8000/storage/";
+
+  // Validation schema
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ 
+        ...formData, 
+        [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log("Validate form data:", formData);
+    const validation = viewBookingSchema.safeParse(formData);
+    if (!validation.success) {
+      console.log("Validation errors:", validation.error.issues);
+      setFormErrors(validation.error.issues);
+      return;
+    }
+
+    console.log("Form data is valid:", formData);
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/check-booking",
+        {
+          ...formData,
+          //untuk mengirimkan data form ke backend
+        },
+        {
+          headers: {
+            "X-API-KEY": "adkfvaennad123123asdcas",
+          },
+        }
+      );
+
+      console.log("We are checking your booking:", response.data);
+      setBookingDetails(response.data);
+    } 
+
+
+
   return (
     <>
       <Navbar />
@@ -38,7 +99,9 @@ export default function CheckBooking() {
               />
               <input
                 type="text"
-                name="name"
+                name="booking_trx_id"
+                onChange={handleChange}
+                value={formData.booking_trx_id}
                 id="name"
                 className="appearance-none outline-none w-full py-3 font-semibold placeholder:font-normal placeholder:text-[#000929]"
                 placeholder="Write your booking trx id"
@@ -57,7 +120,9 @@ export default function CheckBooking() {
               />
               <input
                 type="tel"
-                name="phone"
+                name="phone_number"
+                onChange={handleChange}
+                value={formData.phone_number}
                 id="phone"
                 className="appearance-none outline-none w-full py-3 font-semibold placeholder:font-normal placeholder:text-[#000929]"
                 placeholder="Write your valid number"
@@ -65,10 +130,11 @@ export default function CheckBooking() {
             </div>
           </div>
           <button
+            disabled={isLoading}
             type="submit"
             className="flex items-center justify-center rounded-full p-[12px_30px] gap-3 bg-[#0D903A] font-bold text-[#F7F7FD]"
           >
-            <span className="text-nowrap">Check Booking</span>
+            <span className="text-nowrap">{isLoading ? "Loading.." : "Check Booking"}</span>
           </button>
         </form>
         <div id="Result" className="grid grid-cols-2 gap-[30px]">
