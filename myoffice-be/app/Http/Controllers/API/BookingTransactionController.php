@@ -9,6 +9,7 @@ use App\Http\Resources\Api\ViewBookingResource;
 use App\Models\BookingTransaction;
 use App\Models\OfficeSpace;
 use Illuminate\Http\Request;
+use Twilio\Rest\Client;
 
 class BookingTransactionController extends Controller
 {
@@ -32,11 +33,36 @@ class BookingTransactionController extends Controller
         return new BookingTransactionResource($bookingTransaction);
 
         //kirim notif via sms dan whatsapp with twilio
-        // $this->sendNotification($bookingTransaction);
-        // return response()->json([
-        //     'message' => 'Booking transaction created successfully',
-        //     'data' => $bookingTransaction,
-        // ], 201);
+        $sid = getenv('TWILIO_SID');
+        $token = getenv('TWILIO_AUTH_TOKEN');
+        $twilio = new Client($sid, $token);
+
+        $messageBody = "Hi {$bookingTransaction->name}, Booking berhasil dilakukan. Terimakasih telah booking di kantor {$bookingTransaction->officeSpace->name}.\n\n";
+        $messageBody = "Pesanan Anda sedang kami proses dengan Booking ID: {$bookingTransaction->booking_trx_id}.\n\n";
+        $meesageBody = "Kami akan menghubungi kembali untuk status booking anda.";
+        // $meesageBody = "waktunya booking anda adalah {$bookingTransaction->started_date} s/d {$bookingTransaction->ended_date}.\n\n";
+        // $messageBody = "Jika ada pertanyaan silahkan hubungi kami di 08123456789.\n\n";
+        // $messageBody = "Terimakasih,\nMyOffice";
+
+        //send SMS
+        $meesage = $twilio->message->create(
+            // "+17626675287",
+            "+{$bookingTransaction->phone_number}",
+            [
+                'from' => getenv('TWILIO_PHONE_NUMBER'),
+                'body' => $messageBody,
+            ]
+        );
+
+        //send whatsapp
+        $twilio->messages->create(
+            "whatsapp:+{$bookingTransaction->phone_number}",
+            [
+                'from' => "whatsapp:" . getenv('TWILIO_PHONE_NUMBER'),
+                'body' => $messageBody,
+            ]
+        );
+
         
     }
 
