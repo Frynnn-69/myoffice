@@ -31,6 +31,8 @@ class BookingTransactionController extends Controller
         $bookingTransaction = BookingTransaction::create($validatedData);
         $bookingTransaction->load('officeSpace'); //load office space relation
 
+        return new BookingTransactionResource($bookingTransaction);
+
         //kirim notif via sms dan whatsapp with twilio
         $sid = getenv('TWILIO_SID');
         $token = getenv('TWILIO_AUTH_TOKEN');
@@ -62,7 +64,7 @@ class BookingTransactionController extends Controller
         //     ]
         // );
 
-        return new BookingTransactionResource($bookingTransaction);
+        
     }
 
     public function booking_details(Request $request)
