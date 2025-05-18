@@ -2,8 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Office } from "../types/types";
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import axios from "axios";
 import { bookingSchema } from "../types/validationBooking";
+import apiClient, { isAxiosError } from "../services/apiService";
 
 export default function BookOffice() {
   const { slug } = useParams<{ slug: string }>();
@@ -29,12 +29,8 @@ export default function BookOffice() {
 
   useEffect(() => {
     // console.log("Office data fethched successfully:", response.data.data);
-    axios
-      .get(`http://127.0.0.1:8000/api/office/${slug}`, {
-        headers: {
-          "X-API-KEY": "adkfvaennad123123asdcas",
-        },
-      })
+    apiClient
+      .get(`/office/${slug}`)
       .then((response) => {
         console.log("Office data fetched successfully:", response.data.data);
 
@@ -57,7 +53,7 @@ export default function BookOffice() {
       })
 
       .catch((error: unknown) => {
-        if (axios.isAxiosError(error)) {
+        if (isAxiosError(error)) {
           console.error("Error fetching office data:", error.message);
           setError(error.message);
         } else {
@@ -106,18 +102,14 @@ export default function BookOffice() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/booking-transaction",
+      const response = await apiClient.post(
+        "/booking-transaction",
         {
           ...formData,
           //untuk mengirimkan data form ke backend
-        },
-        {
-          headers: {
-            "X-API-KEY": "adkfvaennad123123asdcas",
-          },
         }
       );
+      console.log("Data yang dikirim ke backend:", formData);
 
       console.log("Form submitted successfully:", response.data);
 
@@ -129,7 +121,7 @@ export default function BookOffice() {
         },
       });
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         console.error("Error submitting form:", error.message);
         setError(error.message);
       } else {

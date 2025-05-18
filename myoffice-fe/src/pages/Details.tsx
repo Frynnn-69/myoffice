@@ -3,8 +3,8 @@ import Navbar from "../components/Navbar";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState, useEffect } from "react";
 import { Office } from "../types/types";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import apiClient, { GMAPS_API_KEY } from "../services/apiService";
 
 export default function Details() {
   const { slug } = useParams<{ slug: string }>(); // Get the slug from the URL
@@ -13,12 +13,8 @@ export default function Details() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:8000/api/office/${slug}`, {
-        headers: {
-          "X-API-KEY": "adkfvaennad123123asdcas",
-        },
-      })
+    apiClient
+      .get(`office/${slug}`)
       .then((response) => {
         setOffices(response.data.data);
         setLoading(false);
@@ -222,7 +218,7 @@ export default function Details() {
               <iframe
                 className="h-full w-full border-0"
                 frameBorder={0}
-                src={`https://www.google.com/maps/embed/v1/place?q=${office.name},&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8`}
+                src={`https://www.google.com/maps/embed/v1/place?q=${office.name},&key=${GMAPS_API_KEY}`}
               />
             </div>
           </div>

@@ -2,8 +2,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import CityCard from "../components/CityCard";
 import { useState, useEffect } from "react";
 import { City } from "../types/types";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import apiClient from "../services/apiService";
 
 export default function BrowseCityWrapper() {
 
@@ -12,12 +12,8 @@ export default function BrowseCityWrapper() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/cities", {
-        headers: {
-          "X-API-KEY": "adkfvaennad123123asdcas",
-        },
-      })
+    apiClient
+      .get("/cities")
       .then((response) => {
         setCities(response.data.data);
         setLoading(false);

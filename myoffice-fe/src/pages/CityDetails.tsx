@@ -2,9 +2,9 @@ import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
 import { City } from "../types/types";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import OfficeCard from "../components/OfficeCard";
 import { Link } from "react-router-dom";
+import apiClient from "../services/apiService";
 
 
 export default function CityDetails() {
@@ -14,12 +14,8 @@ export default function CityDetails() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:8000/api/city/${slug}`, {
-        headers: {
-          "X-API-KEY": "adkfvaennad123123asdcas",
-        },
-      })
+    apiClient
+      .get(`/city/${slug}`)
       .then((response) => {
         setCity(response.data.data);
         setLoading(false);

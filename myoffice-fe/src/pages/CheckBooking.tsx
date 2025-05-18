@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import { z } from "zod";
 import { BookingDetails } from "../types/types";
 import { viewBookingSchema } from "../types/validationBooking";
-import axios from "axios";
+import apiClient, { isAxiosError } from "../services/apiService";
 
 export default function CheckBooking() {
   const [formData, setFormData] = useState({
@@ -43,23 +43,18 @@ export default function CheckBooking() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/check-booking",
+      const response = await apiClient.post(
+        "/check-booking",
         {
           ...formData,
           //untuk mengirimkan data form ke backend
         },
-        {
-          headers: {
-            "X-API-KEY": "adkfvaennad123123asdcas",
-          },
-        }
       );
 
       console.log("We are checking your booking:", response.data);
       setBookingDetails(response.data.data);
     } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
+      if (isAxiosError(error)) {
         console.error("Error submitting form:", error.message);
         setError(error.message);
       } else {

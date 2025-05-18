@@ -25,7 +25,7 @@ export default function OfficeCard({office} : OfficeCardProps) {
               Rp {office.price.toLocaleString("id-ID")}
             </p>
             <div className="flex items-center justify-end gap-[6px]">
-              <p className="font-semibold">{office.duration}</p>
+              <p className="font-semibold">{office.duration} Days</p>
               <img
                 src="/assets/images/icons/clock.svg"
                 className="w-6 h-6"
