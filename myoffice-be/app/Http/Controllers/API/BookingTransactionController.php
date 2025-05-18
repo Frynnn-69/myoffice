@@ -30,7 +30,6 @@ class BookingTransactionController extends Controller
 
         $bookingTransaction = BookingTransaction::create($validatedData);
         $bookingTransaction->load('officeSpace'); //load office space relation
-        return new BookingTransactionResource($bookingTransaction);
 
         //kirim notif via sms dan whatsapp with twilio
         $sid = getenv('TWILIO_SID');
@@ -39,13 +38,13 @@ class BookingTransactionController extends Controller
 
         $messageBody = "Hi {$bookingTransaction->name}, Booking berhasil dilakukan. Terimakasih telah booking di kantor {$bookingTransaction->officeSpace->name}.\n\n";
         $messageBody = "Pesanan Anda sedang kami proses dengan Booking ID: {$bookingTransaction->booking_trx_id}.\n\n";
-        $meesageBody = "Kami akan menghubungi kembali untuk status booking anda.";
+        $messageBody = "Kami akan menghubungi kembali untuk status booking anda.";
         // $meesageBody = "waktunya booking anda adalah {$bookingTransaction->started_date} s/d {$bookingTransaction->ended_date}.\n\n";
         // $messageBody = "Jika ada pertanyaan silahkan hubungi kami di 08123456789.\n\n";
         // $messageBody = "Terimakasih,\nMyOffice";
 
         //send SMS
-        $meesage = $twilio->message->create(
+        $message = $twilio->messages->create(
             // "+17626675287",
             "+{$bookingTransaction->phone_number}",
             [
@@ -55,15 +54,15 @@ class BookingTransactionController extends Controller
         );
 
         //send whatsapp
-        $twilio->messages->create(
-            "whatsapp:+{$bookingTransaction->phone_number}",
-            [
-                'from' => "whatsapp:" . getenv('TWILIO_PHONE_NUMBER'),
-                'body' => $messageBody,
-            ]
-        );
+        // $twilio->messages->create(
+        //     "whatsapp:+{$bookingTransaction->phone_number}",
+        //     [
+        //         'from' => "whatsapp:" . getenv('TWILIO_PHONE_NUMBER'),
+        //         'body' => $messageBody,
+        //     ]
+        // );
 
-        
+        return new BookingTransactionResource($bookingTransaction);
     }
 
     public function booking_details(Request $request)
